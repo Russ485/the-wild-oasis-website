@@ -83,7 +83,7 @@ export async function getBookings(guestId) {
     .from("bookings")
     // We actually also need data on the cabins as well. But let's ONLY take the data that we actually need, in order to reduce downloaded data.
     .select(
-      "id, created_at, startDate, endDate, numNights, numGuests, totalPrice, guestId, cabinId, cabins(name, image)"
+      "id, created_at, startDate, endDate, numNights, numGuests, totalPrice, guestId, cabinId, cabins(name, image)",
     )
     .eq("guestId", guestId)
     .order("startDate");
@@ -143,10 +143,15 @@ export async function getSettings() {
 export async function getCountries() {
   try {
     const res = await fetch(
-      "https://restcountries.com/v2/all?fields=name,flag"
+      "https://api.restcountries.com/countries/v5?limit=100&response_fields=names.common,codes.alpha_2",
+      {
+        headers: {
+          Authorization: process.env.REST_COUNTRIES_API_KEY,
+        },
+      },
     );
     const countries = await res.json();
-    return countries;
+    return countries.data.objects;
   } catch {
     throw new Error("Could not fetch countries");
   }

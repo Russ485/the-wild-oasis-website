@@ -13,8 +13,6 @@ function Counter({ users }) {
     setCounter((value) => value - 1);
   }
 
-  console.log(users);
-
   return (
     <div>
       <button onClick={increase}>+</button>

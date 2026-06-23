@@ -6,7 +6,8 @@ async function SelectCountry({ defaultCountry, name, id, className }) {
   const countries = await getCountries();
 
   const flag =
-    countries.find((country) => country.name === defaultCountry)?.flag ?? "";
+    countries.find((country) => country.names.common === defaultCountry)?.codes
+      .alpha_2 ?? "";
 
   return (
     <select
@@ -19,8 +20,11 @@ async function SelectCountry({ defaultCountry, name, id, className }) {
     >
       <option value="">Select country...</option>
       {countries.map((c) => (
-        <option key={c.name} value={`${c.name}%${c.flag}`}>
-          {c.name}
+        <option
+          key={c.names.common}
+          value={`${c.names.common}%${c.codes.alpha_2}`}
+        >
+          {c.names.common}
         </option>
       ))}
     </select>
